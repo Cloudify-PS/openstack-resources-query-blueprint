@@ -18,7 +18,7 @@ dsl_definitions:
 node_templates:
 
   OpenstackQuery:
-    type: cloudify.openstack.nodes.Limits:
+    type: cloudify.openstack.nodes.Limits
     properties:
       openstack_config: *openstack_config
 
