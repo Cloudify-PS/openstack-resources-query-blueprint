@@ -67,7 +67,8 @@ workflows:
   refresh:
         mapping: default_workflows.cloudify.plugins.workflows.execute_operation
         parameters:
-          operation: {'cloudify.interfaces.lifecycle.create'}
+          operation:
+            default: 'cloudify.interfaces.lifecycle.create'
           operation_kwargs:
             default: {}
           allow_kwargs_override:
