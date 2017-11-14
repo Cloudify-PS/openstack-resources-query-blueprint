@@ -61,3 +61,21 @@ outputs:
 
       - type: workflow-button
         name: Refresh
+
+
+workflows:
+  refresh:
+        parameters:
+          operation: {'cloudify.interfaces.lifecycle.create'}
+          operation_kwargs:
+            default: {}
+          allow_kwargs_override:
+            default: null
+          run_by_dependency_order:
+            default: false
+          type_names:
+            default: ['cloudify.openstack.nodes.Limits']
+          node_ids:
+            default: []
+          node_instance_ids:
+            default: []
