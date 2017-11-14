@@ -28,24 +28,24 @@ outputs:
     value:
       - type: gauge
         name: CPU
-        description: "cpu usage"
+        description: "Cores Allocated"
         min: 0
-        max: 100
-        value: 75
+        max: { get_attribute: [  OpenstackQuery , maxTotalCores ] }
+        value: { get_attribute: [  OpenstackQuery , totalCoresUsed ] }
 
       - type: gauge
         name: RAM
-        description: "Memory usage"
+        description: "Memory Allocated"
         min: 0
-        max: 100
-        value: 75
+        max: { get_attribute: [  OpenstackQuery , maxTotalRAMSize ] }
+        value: { get_attribute: [  OpenstackQuery , totalRAMUsed ] }
 
       - type: gauge
         name: Instances
-        description: "Active Instances"
+        description: "Active Allocated"
         min: 0
-        max: 100
-        value: 75
+        max: { get_attribute: [  OpenstackQuery , maxTotalInstances ] }
+        value:  { get_attribute: [  OpenstackQuery , totalInstancesUsed ] }
 
       - type: workflow-select
         name: Default Tenant
