@@ -76,8 +76,8 @@ workflows:
           run_by_dependency_order:
             default: false
           type_names:
-            default: ['cloudify.openstack.nodes.Limits']
-          node_ids:
             default: []
+          node_ids:
+            default: ['OpenstackQuery']
           node_instance_ids:
             default: []
