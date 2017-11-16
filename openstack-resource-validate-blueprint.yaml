@@ -1,5 +1,9 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
+inputs:
+   required_cores:
+     default: 15
+
 imports:
   - http://www.getcloudify.org/spec/cloudify/4.0.1/types.yaml
   - https://raw.githubusercontent.com/MichaelShn/cloudify-openstack-plugin/master/plugin.yaml
@@ -24,7 +28,7 @@ node_templates:
       check_limits:
         - name: cores
           type: hard
-          value: 10
+          value: { get_input : required_cores }
           calculate: 'by_max_used_limit'
           max: 'maxTotalCores'
           used: 'totalCoresUsed'
