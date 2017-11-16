@@ -1,0 +1,91 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.0.1/types.yaml
+  - https://raw.githubusercontent.com/MichaelShn/cloudify-openstack-plugin/master/plugin.yaml
+
+
+dsl_definitions:
+
+  openstack_config: &openstack_config
+    username: { get_secret: keystone_username }
+    password: { get_secret: keystone_password }
+    tenant_name: { get_secret: keystone_tenant_name }
+    auth_url: { get_secret: keystone_url }
+    region: { get_secret: region }
+
+
+node_templates:
+
+  OpenstackQuery:
+    type: cloudify.openstack.nodes.Limits
+    properties:
+      openstack_config: *openstack_config
+      check_limits:
+        - name: cores
+          type: hard
+          value: 10
+          calculate: by_max_used_limit
+          max: maxTotalCores
+          used: usedtotalcores
+
+
+outputs:
+  visual_outputs:
+    description: Openstack Resources Status
+    value:
+      - type: gauge
+        name: CPU
+        description: "Cores Allocated"
+        min: 0
+        max: { get_attribute: [  OpenstackQuery , maxTotalCores ] }
+        value: { get_attribute: [  OpenstackQuery , totalCoresUsed ] }
+
+      - type: gauge
+        name: RAM
+        description: "Memory Allocated"
+        min: 0
+        max: { get_attribute: [  OpenstackQuery , maxTotalRAMSize ] }
+        value: { get_attribute: [  OpenstackQuery , totalRAMUsed ] }
+
+      - type: gauge
+        name: Instances
+        description: "Active Allocated"
+        min: 0
+        max: { get_attribute: [  OpenstackQuery , maxTotalInstances ] }
+        value:  { get_attribute: [  OpenstackQuery , totalInstancesUsed ] }
+
+      - type: workflow-select
+        name: Default Tenant
+        workflow: refresh
+
+      - type: workflow-select
+        name: Tenant A
+        workflow: refresh_a
+
+      - type: workflow-select
+        name: Tenant B
+        workflow: refresh_b
+
+      - type: workflow-button
+        name: Refresh
+
+
+workflows:
+  refresh:
+        mapping: default_workflows.cloudify.plugins.workflows.execute_operation
+        parameters:
+          operation:
+            default: 'cloudify.interfaces.lifecycle.create'
+          operation_kwargs:
+            default: {}
+          allow_kwargs_override:
+            default: null
+          run_by_dependency_order:
+            default: false
+          type_names:
+            default: []
+          node_ids:
+            default: ['OpenstackQuery']
+          node_instance_ids:
+            default: []
