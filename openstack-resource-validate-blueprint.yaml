@@ -2,6 +2,7 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 inputs:
    required_cores:
+     type: integet
      default: 15
 
 imports:
