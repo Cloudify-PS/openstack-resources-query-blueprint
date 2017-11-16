@@ -25,9 +25,9 @@ node_templates:
         - name: cores
           type: hard
           value: 10
-          calculate: by_max_used_limit
-          max: maxTotalCores
-          used: usedtotalcores
+          calculate: 'by_max_used_limit'
+          max: 'maxTotalCores'
+          used: 'totalCoresUsed'
 
 
 outputs:
