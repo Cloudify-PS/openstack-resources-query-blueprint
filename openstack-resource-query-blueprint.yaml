@@ -35,7 +35,7 @@ outputs:
 
       - type: gauge
         name: RAM
-        description: "Memory Allocated"
+        description: "Memory Allocated in MB"
         min: 0
         max: { get_attribute: [  OpenstackQuery , maxTotalRAMSize ] }
         value: { get_attribute: [  OpenstackQuery , totalRAMUsed ] }
